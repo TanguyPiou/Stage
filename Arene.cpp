@@ -32,6 +32,7 @@ void Arene::init()
      else
          _map.push_back(Tuile::mur);
    }
+    _tailleMap=5;
 
     //Armes arme1("Base",30,0.20,0.2,0.1);
 
@@ -46,24 +47,89 @@ void Arene::init()
 
 }
 
-void Arene::mouvement()
-{
-    Tortue *currentTortue;
-    int nbcase=3;
-    std::string direction="droite";
-    if (Arene::Tour)
+std::vector<int> Arene::tuileAccessible(Tortue tortue){
+
+    // mise en place d'une variable pour simuler le déplacement de la tortue
+    int currentTuile=tortue.pos();
+    float currentEndu=tortue.PE();
+    bool mur=false;
+
+    std::vector<int> listeAccessible;
+
+
+    //_tailleMap?
+
+
+
+    //Déplacement à droite tant qu'on arrive pas au bord de la map et que l'endurance n'est pas à zéro
+    //et qu'on a pas rencontré un mur
+    while (currentTuile/_tailleMap != 0 and currentEndu!=0 and mur==false)
     {
-        *currentTortue=_tortue1;
-        if (currentTortue->PE()==0)
-        {
-            //"pouquoi je fais ça";
-        }
+        currentTuile++;
+        if (_map[currentTuile]==Tuile::plaine){
+            listeAccessible.push_back(currentTuile);
+            currentEndu--;
+            }
+        else
+            mur=true;
     }
-    else{}
-        *currentTortue=_tortue2;
 
+    //Reviens à la place initiale
+    currentTuile=tortue.pos();
+    currentEndu=tortue.PE();
+    mur=false;
+
+    //Déplacement à gauche tant qu'on arrive pas au bord de la map et que l'endurance n'est pas à zéro
+    //et qu'on a pas rencontré un mur
+    while (currentTuile/_tailleMap != 0 and currentEndu!=0 and mur==false)
+    {
+        currentTuile--;
+        if (Arene::_map[currentTuile]==Tuile::plaine){
+            listeAccessible.push_back(currentTuile);
+            currentEndu--;
+            }
+        else
+            mur=true;
+    }
+
+    //Reviens à la place initiale
+    currentTuile=tortue.pos();
+    currentEndu=tortue.PE();
+    mur=false;
+
+    //Déplacement vers le haut tant qu'on arrive pas au bord de la map et que l'endurance n'est pas à zéro
+    //et qu'on a pas rencontré un mur
+    while (currentTuile>=0 and currentEndu!=0 and mur==false)
+    {
+        //Avancement virtuel de la tortue
+        currentTuile=currentTuile-_tailleMap;
+        //Engistrement de la position coutant de l'endu
+        if (Arene::_map[currentTuile]==Tuile::plaine){
+            listeAccessible.push_back(currentTuile);
+            currentEndu--;
+            }
+        else
+            mur=true;
+    }
+
+    currentTuile=tortue.pos();
+    currentEndu=tortue.PE();
+    mur=false;
+
+    //Déplacement vers le bas tant qu'on arrive pas au bord de la map et que l'endurance n'est pas à zéro
+    //et qu'on a pas rencontré un mur
+    while (currentTuile <= static_cast<int>(Arene::_map.size()) and currentEndu!=0 and mur==false)
+    {
+        currentTuile=currentTuile+_tailleMap;
+        if (Arene::_map[currentTuile]==Tuile::plaine){
+            listeAccessible.push_back(currentTuile);
+            currentEndu--;
+            }
+        else
+            mur=true;
+    }
+    return listeAccessible;
 }
-
 
 
 

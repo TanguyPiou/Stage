@@ -20,15 +20,16 @@ public:
 
     enum class Tuile {plaine,mur};
     void init();
-    void mouvement();
+    std::vector<int> tuileAccessible(Tortue tortue);
 
 
 private:
     Ui::Arene *ui;
     Tortue _tortue1;
     Tortue _tortue2;
-    bool Tour;
+    bool _tour;
     std::vector<Tuile> _map;
+    int _tailleMap;
 };
 
 

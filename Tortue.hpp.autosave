@@ -1,6 +1,5 @@
 #pragma once
 #include "Armes.hpp"
-
 #include <vector>
 
 class Tortue {

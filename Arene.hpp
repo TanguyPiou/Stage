@@ -25,7 +25,7 @@ public:
     Tortue tortue1();
     Tortue tortue2();
     std::vector<int> tuileAccessible(Tortue tortue);
-    bool tuileDispo(int tuile);
+    bool tuileDispo(Tortue tortue,int tuileVoulu);
     int coutEnduDeplacement (Tortue tortue, int positionVoulu);
     void deplacementTortue(Tortue tortue, int positionVoulu);
 

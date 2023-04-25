@@ -13,6 +13,7 @@ public:
     float PE();
     int pos();
 
+
 private:
     std::string _nom;
     float _PV;

@@ -1,6 +1,5 @@
 #pragma once
 #include "Armes.hpp"
-
 #include <vector>
 
 class Tortue {
@@ -11,8 +10,12 @@ public:
 
     std::string nom();
     float PV();
+    void setPV(float newPV);
     float PE();
+    void setPE(float newPE);
     int pos();
+    void setPos(int newPos);
+
 
 private:
     std::string _nom;

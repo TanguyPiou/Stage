@@ -7,6 +7,8 @@ public:
 
 Armes(std::string nom, float degat, float crit, float portee, float endurance);
 
+    float degat();
+
 
 private :
     std::string _nom;

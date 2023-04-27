@@ -36,26 +36,19 @@ void Tortue::setPos(int newPos)
     _pos=newPos;
 }
 
+bool Tortue::tir()
+{
+    return _tir;
+}
 
+void Tortue::setTir(bool tir)
+{
+    _tir=tir;
+}
 
-
-
-    /*
-    Tortue *currentTortue;
-    int nbcase=3;
-    std::string direction="droite";
-    if (Arene::Tour)
-    {
-        *currentTortue=_tortue1;
-        if (currentTortue->PE()==0)
-        {
-            //"pouquoi je fais ça";
-        }
-    }
-    else{}
-        *currentTortue=_tortue2;
-    */
-
-
+Armes Tortue::arme()
+{
+    return _arme;
+}
 
 

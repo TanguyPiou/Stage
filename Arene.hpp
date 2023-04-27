@@ -25,9 +25,13 @@ public:
     Tortue tortue1();
     Tortue tortue2();
     std::vector<int> tuileAccessible(Tortue tortue);
-    bool tuileDispo(Tortue tortue,int tuileVoulu);
-    int coutEnduDeplacement (Tortue tortue, int positionVoulu);
+    std::vector<int> mouvementPossible(Tortue tortue);
+    bool tuileDispo(int tuileVoulu);
+    int distanceAction (Tortue tortue, int positionVoulu);
     void deplacementTortue(Tortue tortue, int positionVoulu);
+    bool presenceTortue(int position);
+    void tir(Tortue tortue, int cible);
+    Tortue * trouveTortue(int position);
 
 
 private:

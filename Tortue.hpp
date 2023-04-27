@@ -6,7 +6,7 @@ class Tortue {
 public:
 
     Tortue(std::string nom, float PV, float pointEndu, Armes arme, int pos):
-    _nom(nom), _PV(PV), _PE(pointEndu), _arme(arme), _pos(pos){};
+    _nom(nom), _PV(PV), _PE(pointEndu), _arme(arme), _pos(pos), _tir(false){};
 
     std::string nom();
     float PV();
@@ -15,6 +15,9 @@ public:
     void setPE(float newPE);
     int pos();
     void setPos(int newPos);
+    bool tir();
+    void setTir(bool tir);
+    Armes arme();
 
 
 private:
@@ -23,4 +26,5 @@ private:
     float _PE;
     Armes _arme;
     int _pos;
+    bool _tir;
 };

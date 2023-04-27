@@ -1,18 +1,24 @@
 #pragma once
 #include "Armes.hpp"
-
 #include <vector>
 
 class Tortue {
 public:
 
     Tortue(std::string nom, float PV, float pointEndu, Armes arme, int pos):
-    _nom(nom), _PV(PV), _PE(pointEndu), _arme(arme), _pos(pos){};
+    _nom(nom), _PV(PV), _PE(pointEndu), _arme(arme), _pos(pos), _tir(false){};
 
     std::string nom();
     float PV();
+    void setPV(float newPV);
     float PE();
+    void setPE(float newPE);
     int pos();
+    void setPos(int newPos);
+    bool tir();
+    void setTir(bool tir);
+    Armes arme();
+
 
 private:
     std::string _nom;
@@ -20,4 +26,5 @@ private:
     float _PE;
     Armes _arme;
     int _pos;
+    bool _tir;
 };

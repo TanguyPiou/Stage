@@ -65,8 +65,20 @@
      <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menusettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionloadmap"/>
+   </widget>
+   <addaction name="menusettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionloadmap">
+   <property name="text">
+    <string>Load map</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

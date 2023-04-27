@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>img/vide.jpg</file>
+        <file>img/tortue.png</file>
+        <file>img/mur.jpg</file>
+    </qresource>
+    <qresource prefix="/maps">
+        <file>maps/map2</file>
+        <file>maps/map1</file>
+        <file>maps/default</file>
+    </qresource>
+</RCC>

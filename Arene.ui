@@ -65,18 +65,30 @@
      <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menusettings">
+   <widget class="QMenu" name="Menu">
     <property name="title">
-     <string>Settings</string>
+     <string>Menu</string>
     </property>
     <addaction name="actionloadmap"/>
+    <addaction name="actionclose"/>
    </widget>
-   <addaction name="menusettings"/>
+   <addaction name="Menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionloadmap">
    <property name="text">
     <string>Load map</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionclose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
  </widget>

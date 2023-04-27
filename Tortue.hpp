@@ -1,8 +1,11 @@
 #pragma once
+#include <QObject>
+#include <QGraphicsItem>
 #include "Armes.hpp"
 #include <vector>
 
-class Tortue {
+class Tortue{
+
 public:
 
     Tortue(std::string nom, float PV, float pointEndu, Armes arme, int pos):

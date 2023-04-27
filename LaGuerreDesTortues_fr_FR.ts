@@ -17,11 +17,26 @@
     </message>
     <message>
         <location filename="Arene.ui" line="70"/>
-        <source>Settings</source>
+        <source>Menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Arene.ui" line="79"/>
+        <location filename="Arene.ui" line="83"/>
+        <source>Ctrl+O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Arene.ui" line="88"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Arene.ui" line="91"/>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="Arene.ui" line="80"/>
         <source>Load map</source>
         <translation type="unfinished"></translation>
     </message>

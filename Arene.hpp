@@ -48,6 +48,7 @@ public:
 
 private slots:
     void on_actionloadmap_triggered();
+    void on_actionclose_triggered();
 
 private:
     Ui::Arene *ui;

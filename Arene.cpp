@@ -27,8 +27,6 @@ Tortue Arene::tortue2()
 
 void Arene::init()
 {
-
-
     loadmap(":/maps/maps/default");
     ui->T1->setText(QString::fromStdString(_tortue1.nom())+"\n"+QString::number(_tortue1.PV())
                     +"\n"+QString::number(_tortue1.PE())+"\n");
@@ -36,15 +34,10 @@ void Arene::init()
                     +"\n"+QString::number(_tortue2.PE())+"\n");
     printmap();
 
-
-
 }
 
 void Arene::loadmap(const QString & fileName)
 {
-
-
-//    QString fileName= "../Tortue/maps/map.txt";
 
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)){
@@ -312,6 +305,11 @@ void Arene::on_actionloadmap_triggered()
     ui->T2->setText(QString::fromStdString(_tortue2.nom())+"\n"+QString::number(_tortue2.PV())
                     +"\n"+QString::number(_tortue2.PE())+"\n");
     printmap();
+}
+
+void Arene::on_actionclose_triggered()
+{
+    this->close();
 }
 
 

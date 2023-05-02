@@ -54,7 +54,6 @@ private slots:
 private:
     Ui::Arene *ui;
     std::vector<Tortue> _listeTortue;
-    //A enlevé quand on pourra créer des tortues au début du jeu
     //Créé fonction accéder tortue
     std::vector<Tuile> _map;
     int _tailleMap;

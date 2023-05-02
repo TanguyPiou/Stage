@@ -19,11 +19,13 @@ void Arene::init()
     _listeTortue.push_back(Tortue ("Avion",10,3,8,24));
     _listeTortue.push_back(Tortue ("HYRAVION",8,3,2,21));
 
+    for (std::size_t i=0; i<_listeTortue.size(); i++){
+
+        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\n");
+    }
+
+
     loadmap(":/maps/maps/default");
-    ui->T1->setText(QString::fromStdString(_listeTortue[0].nom())+"\n"+QString::number(_listeTortue[0].PV())
-                    +"\n"+QString::number(_listeTortue[0].PE())+"\n");
-    ui->T2->setText(QString::fromStdString(_listeTortue[1].nom())+"\n"+QString::number(_listeTortue[1].PV())
-                    +"\n"+QString::number(_listeTortue[1].PE())+"\n");
     printmap();
 }
 
@@ -380,10 +382,11 @@ void Arene::on_actionloadmap_triggered()
     if (fileName.isEmpty())
         return;
     else loadmap(fileName);
-    ui->T1->setText(QString::fromStdString(_listeTortue[0].nom())+"\n"+QString::number(_listeTortue[0].PV())
-                    +"\n"+QString::number(_listeTortue[0].PE())+"\n");
-    ui->T2->setText(QString::fromStdString(_listeTortue[1].nom())+"\n"+QString::number(_listeTortue[1].PV())
-                    +"\n"+QString::number(_listeTortue[1].PE())+"\n");
+
+    for (std::size_t i=0; i<_listeTortue.size(); i++){
+
+        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\n");
+    }
     printmap();
 }
 

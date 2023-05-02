@@ -22,8 +22,10 @@ public:
     enum class Tuile {plaine,mur};
     void init();
     int tailleMap();
+    // A SUPPR
     Tortue *tortue1();
     Tortue *tortue2();
+    // FIN SUPPR
     std::vector<int> tuileAccessible(Tortue *tortue) const;
     std::vector<int> mouvementPossible(Tortue *tortue) const;
     bool tuileDispo(int tuileVoulu) const;
@@ -31,6 +33,7 @@ public:
     void deplacementTortue(Tortue *tortue, int positionVoulu);
     bool presenceTortue(int position) const;
     void tir(Tortue *tortue, int cible);
+    std::vector<int> positionTortue();
     Tortue * trouveTortue(int position);
     bool tortueEnVie (Tortue *tortue) const;
     bool finPartie() const;
@@ -45,8 +48,7 @@ private:
     //Créé fonction accéder tortue
     Tortue _tortue1;
     Tortue _tortue2;
-    // BESOIN ???????S
-    int _tour;
+    // Fin SUPPR
     std::vector<Tuile> _map;
     int _tailleMap;
 };

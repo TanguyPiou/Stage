@@ -3,8 +3,11 @@
 
 Arene::Arene(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::Arene), _tortue1("Avion",5,4,Armes("Base",2,0.20,0.2,0.1),24),
+    , ui(new Ui::Arene),
+      // SUPPR
+      _tortue1("Avion",5,4,Armes("Base",2,0.20,0.2,0.1),24),
       _tortue2("HYRAVION",4,5,Armes("Base",5,0.20,0.2,0.1),21)
+      // FIN SUPPR
 {
     ui->setupUi(this);
     init();
@@ -269,9 +272,18 @@ void Arene::tir(Tortue *tortue, int cible)
    tortue->setTir(false);
 }
 
+std::vector<int> Arene::positionTortue()
+{
+    std::vector<int> posTortue;
+    for (int i=0; i<static_cast<int>(_listeTortue.size());++i)
+    {
+        posTortue.push_back(_listeTortue[i].pos());
+    }
+    return posTortue;
+}
+
 Tortue * Arene::trouveTortue(int position)
 {
-    //Autre fonction pour sortir la liste de position des tortues ?
     Tortue * tortueTrouver;
     for (int i=0; i<static_cast<int>(_listeTortue.size());++i){
         if(_listeTortue[i].pos()==position)
@@ -280,9 +292,6 @@ Tortue * Arene::trouveTortue(int position)
     return tortueTrouver;
 }
 
-
-
-//Fonction regarde la vie de toutes les tortues ?????
 bool Arene::tortueEnVie(Tortue *tortue) const
 {
     if (tortue->PV()>0)
@@ -315,7 +324,7 @@ void Arene::jeu()
     int n;
 
     int tourTortue=0;
-    //while//test
+
     while(not finPartie())
     {
         tortue=&_listeTortue[tourTortue];

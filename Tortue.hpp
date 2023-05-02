@@ -8,16 +8,16 @@ public:
     Tortue(std::string nom, float PV, float pointEndu, Armes arme, int pos):
     _nom(nom), _PV(PV), _PE(pointEndu), _arme(arme), _pos(pos), _tir(false){};
 
-    std::string nom();
-    float PV();
+    std::string nom() const;
+    float PV() const;
     void setPV(float newPV);
-    float PE();
+    float PE() const;
     void setPE(float newPE);
-    int pos();
+    int pos() const;
     void setPos(int newPos);
-    bool tir();
+    bool tir() const;
     void setTir(bool tir);
-    Armes arme();
+    Armes arme() const;
 
 
 private:

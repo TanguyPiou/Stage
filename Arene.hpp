@@ -9,12 +9,6 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsItem>
-#include <QGraphicsPixmapItem>
-#include <QPixmap>
-
 QT_BEGIN_NAMESPACE
 namespace Ui { class Arene; }
 QT_END_NAMESPACE
@@ -35,16 +29,23 @@ public:
     void loadmap(const QString & fileName);
     void printmap();
     int tailleMap();
-    Tortue tortue1();
-    Tortue tortue2();
-    std::vector<int> tuileAccessible(Tortue tortue);
-    std::vector<int> mouvementPossible(Tortue tortue);
-    bool tuileDispo(int tuileVoulu);
-    int distanceAction (Tortue tortue, int positionVoulu);
-    void deplacementTortue(Tortue tortue, int positionVoulu);
-    bool presenceTortue(int position);
-    void tir(Tortue tortue, int cible);
+    // A SUPPR
+    Tortue *tortue1();
+    Tortue *tortue2();
+    // FIN SUPPR
+    std::vector<int> tuileAccessible(Tortue *tortue) const;
+    std::vector<int> mouvementPossible(Tortue *tortue) const;
+    bool tuileDispo(int tuileVoulu) const;
+    int distanceAction (Tortue *tortue, int positionVoulu)const;
+    void deplacementTortue(Tortue *tortue, int positionVoulu);
+    bool presenceTortue(int position) const;
+    void tir(Tortue *tortue, int cible);
+    std::vector<int> positionTortue();
     Tortue * trouveTortue(int position);
+    bool tortueEnVie (Tortue *tortue) const;
+    bool finPartie() const;
+
+    void jeu();
 
 private slots:
     void on_actionloadmap_triggered();
@@ -52,12 +53,9 @@ private slots:
 
 private:
     Ui::Arene *ui;
-    Tortue _tortue1;
-    Tortue _tortue2;
-    bool _tour;
+    std::vector<Tortue> _listeTortue;
+    //A enlevé quand on pourra créer des tortues au début du jeu
+    //Créé fonction accéder tortue
     std::vector<Tuile> _map;
     int _tailleMap;
 };
-
-
-

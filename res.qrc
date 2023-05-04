@@ -3,6 +3,8 @@
         <file>img/vide.jpg</file>
         <file>img/tortue.png</file>
         <file>img/mur.jpg</file>
+        <file>img/mur2.png</file>
+        <file>img/bg.png</file>
     </qresource>
     <qresource prefix="/maps">
         <file>maps/map2</file>

@@ -16,17 +16,26 @@ Arene::~Arene()
 
 void Arene::init()
 {
-    _listeTortue.push_back(Tortue ("Avion",10,3,8,24));
-    _listeTortue.push_back(Tortue ("HYRAVION",8,3,2,21));
-
-    for (std::size_t i=0; i<_listeTortue.size(); i++){
-
-        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\n");
-    }
-
-
     loadmap(":/maps/maps/default");
+    initmap();
+
+    //Creation tortues
+    int nbplayer=2;  //SETTINGS
+    for(int i=0; i<nbplayer; i++){
+        _listeTortue.push_back(Tortue ("Tortue"+std::to_string(i+1),10,3,10,_listePosSpawn[i]));
+    }
+    updatePosTortues();
+
+    //affichage info
+    for (std::size_t i=0; i<_listeTortue.size(); i++){
+        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\nPosition: "+QString::number(_listeTortue[i].pos())+"\n\n");
+    }
     printmap();
+    //affichage info
+
+
+
+
 }
 
 void Arene::loadmap(const QString & fileName)
@@ -41,13 +50,25 @@ void Arene::loadmap(const QString & fileName)
 
     std::vector<Tuile> map;
     int taille=0;
+    int pos=0;
     //Parcours du fichier
     while(!in.atEnd()){
         QString ligne = in.readLine();
         taille++;
         for(auto i : ligne){
-            if(i=='M') map.push_back(Tuile::mur);
-            else map.push_back(Tuile::plaine);
+            if(i=='M'){
+                map.push_back(Tuile::mur);
+                pos++;
+            }
+            else if(i=='P'){
+                map.push_back(Tuile::plaine);
+                pos++;
+            }
+            else if(i=='S'){
+                map.push_back(Tuile::plaine);
+                _listePosSpawn.push_back(pos);
+                pos++;
+            }
         }
     }
 
@@ -72,6 +93,55 @@ void Arene::printmap()
         }
     }
     ui->Map->setText(QString::fromStdString(m));
+}
+
+void Arene::initmap()
+{
+    //Nouvelle scene si besoin
+    if(!ui->graphicsView->scene()){
+        QGraphicsScene *scene= new QGraphicsScene;
+        ui->graphicsView->setScene(scene);
+    }
+
+    //Taille d'une image (à mettre dans settings plus tard j'imagine)
+    int t=64;
+    ui->graphicsView->setMinimumSize(t*_tailleMap+_tailleMap,t*_tailleMap+_tailleMap);
+    ui->graphicsView->setMaximumSize(t*_tailleMap+_tailleMap,t*_tailleMap+_tailleMap);
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    //Création des images
+    QPixmap imgMur= QPixmap(":/images/img/mur.jpg").scaled(t,t);
+    QPixmap imgBG= QPixmap(":/images/img/bg.png").scaled(t*_tailleMap,t*_tailleMap);
+
+    //Ajout de l'image de fond
+    QGraphicsPixmapItem *background= new QGraphicsPixmapItem;
+    background->setPixmap(imgBG);
+    background->setPos(0,0);
+    ui->graphicsView->scene()->addItem(background);
+
+    //Ajout des murs
+    for(std::size_t i=0; i<_map.size(); i++){
+        if(_map[i]==Tuile::mur){
+            QGraphicsPixmapItem *mur= new QGraphicsPixmapItem;
+            mur->setPixmap(imgMur);
+            mur->setPos(i%_tailleMap*t,i/_tailleMap*t);
+            ui->graphicsView->scene()->addItem(mur);
+        }
+    }
+}
+
+void Arene::updatePosTortues()
+{
+    int t=64; //settings
+    QPixmap imgTortue= QPixmap(":/images/img/tortue.png").scaled(t,t);
+
+    for(auto i : listePositionTortue()){
+        QGraphicsPixmapItem *tortue= new QGraphicsPixmapItem;
+        tortue->setPixmap(imgTortue);
+        tortue->setPos(i%_tailleMap*t,i/_tailleMap*t);
+        ui->graphicsView->scene()->addItem(tortue);
+    }
 }
 
 std::vector<int> Arene::tuileAccessible(Tortue *tortue) const{
@@ -326,6 +396,15 @@ bool Arene::finPartie() const
 
 }
 
+std::vector<int> Arene::listePositionTortue() const
+{
+    std::vector<int> posTortue;
+    for (auto i : _listeTortue){
+        posTortue.push_back(i.pos());
+    }
+    return posTortue;
+}
+
 void Arene::jeu()
 {
 
@@ -381,13 +460,27 @@ void Arene::on_actionloadmap_triggered()
 
     if (fileName.isEmpty())
         return;
-    else loadmap(fileName);
+    else{
+        _listePosSpawn.clear();
+        loadmap(fileName);
+    }
+    //Maj posSpawn
+    for(std::size_t i=0; i<_listeTortue.size(); i++){
+        _listeTortue[i].setPos(_listePosSpawn[i]);
+    }
 
+    //affichage info maj
+    ui->T1->clear();
     for (std::size_t i=0; i<_listeTortue.size(); i++){
-
-        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\n");
+        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\nPosition: "+QString::number(_listeTortue[i].pos())+"\n\n");
     }
     printmap();
+    //affichage info maj
+
+    //Maj scene
+    ui->graphicsView->scene()->clear();
+    initmap();
+    updatePosTortues();
 }
 
 void Arene::on_actionclose_triggered()

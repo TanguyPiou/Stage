@@ -9,6 +9,9 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
+#include <QGraphicsPixmapItem>
+#include <QPixmap>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Arene; }
 QT_END_NAMESPACE
@@ -28,11 +31,9 @@ public:
     void init();
     void loadmap(const QString & fileName);
     void printmap();
+    void initmap();
+    void updatePosTortues();
     int tailleMap();
-    // A SUPPR
-    Tortue *tortue1();
-    Tortue *tortue2();
-    // FIN SUPPR
     std::vector<int> tuileAccessible(Tortue *tortue) const;
     std::vector<int> mouvementPossible(Tortue *tortue) const;
     bool tuileDispo(int tuileVoulu) const;
@@ -44,7 +45,7 @@ public:
     Tortue * trouveTortue(int position);
     bool tortueEnVie (Tortue *tortue) const;
     bool finPartie() const;
-
+    std::vector<int> listePositionTortue() const;
     void jeu();
 
 private slots:
@@ -54,7 +55,7 @@ private slots:
 private:
     Ui::Arene *ui;
     std::vector<Tortue> _listeTortue;
-    //Créé fonction accéder tortue
+    std::vector<int> _listePosSpawn;
     std::vector<Tuile> _map;
     int _tailleMap;
 };

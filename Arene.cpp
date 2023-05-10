@@ -1,6 +1,7 @@
 #include "Arene.hpp"
 #include "./ui_Arene.h"
 
+
 //Partie QT
 Arene::Arene(QWidget *parent)
     : QMainWindow(parent)
@@ -15,10 +16,24 @@ Arene::~Arene()
     delete ui;
 }
 
+void Arene::setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap)
+{
+    for (std::size_t n=0;n<_listeTortue.size() ;++n )
+    {
+            _listeTortue[n].setPE(listeDesTortues[n].PE());
+            _listeTortue[n].setPV(listeDesTortues[n].PV());
+            _listeTortue[n].setDegats(listeDesTortues[n].degats());
+            _listeTortue[n].setPos(listeDesTortues[n].pos());
+    }
+    _map=map;
+    _tailleMap=tailleMap;
+}
+
 void Arene::init()
 {
     _listeTortue.push_back(Tortue ("Avion",10,3,8,0));
     _listeTortue.push_back(Tortue ("HYRAVION",8,3,10,24));
+
 
     for (std::size_t i=0; i<_listeTortue.size(); i++){
 
@@ -81,76 +96,6 @@ void Arene::printmap()
 //Fonction de Gestion de la Partie//
 
 
-void Arene::jeu()
-{
-
-    Tortue * tortue;
-    Tortue * victime;
-    int tuile;
-    char reponse;
-    int tourTortue=0;
-
-    IA* joueur;
-    std::vector<IA*> listeJoueur;
-
-    //Modifiable
-    IAleatoire J1;
-    Joueur J2;
-    listeJoueur.push_back(&J1);
-    listeJoueur.push_back(&J2);
-
-    while(not finPartie())
-    {
-        std::cout<<"Tour tortue : "<<tourTortue<<std::endl;
-        tortue=&_listeTortue[tourTortue];
-        joueur=listeJoueur[tourTortue];
-
-        int enduMax=tortue->PE();
-        bool peutTirer=true;
-        bool finTour=false;
-        while (tortue->PE()>0 and not finTour and not finPartie())
-        {
-            std::cout<<"Position des tortues : "<<std::endl;
-            for (auto i : listeDesPositionsTortues())
-            {
-                std::cout<<trouveLaTortue(i)->nom()<<"(tortue "<<numeroDeLaTortue(trouveLaTortue(i))<<") |"<<i<<"|"<<std::endl;
-            }
-            std::cout<<std::endl;
-            reponse=joueur->continuTour();
-
-            if (reponse=='y')
-            {
-                if (peutTirer and joueur->tirer(posTortueAPorterDeTir(tortue))=='y')
-                {
-                    tuile=joueur->cible(posTortueAPorterDeTir(tortue));
-                    tir(tortue,tuile);
-                    victime=trouveLaTortue(tuile);
-                    peutTirer=false;
-
-                    std::cout<<tortue->nom()<<"(tortue "<<numeroDeLaTortue(tortue)<<") a tirer sur "<<victime->nom()<<"(tortue "<<numeroDeLaTortue(victime)<<")"<<std::endl;
-                    std::cout<<victime->nom()<<" a subis "<<tortue->degats()<<" de dégat il lui reste "<<victime->PV()<<std::endl<<std::endl;
-
-                }
-                else
-                {
-                    tuile=joueur->mouvement(listeMouvementsPossibles(tortue));
-                    deplacerTortue(tortue,tuile);
-
-                    std::cout<<tortue->nom()<<"(tortue "<<numeroDeLaTortue(tortue)<<") c'est déplacé sur la case "<<tuile<<std::endl<<std::endl;
-                }
-
-            }
-            else
-            {
-               finTour=true;
-            }
-        }
-
-        tortue->setPE(enduMax);
-        tourTortue=(tourTortue+1)%static_cast<int>(_listeTortue.size());
-    }
-    //victoire
-}
 
 
 bool Arene::finPartie() const
@@ -166,6 +111,23 @@ bool Arene::finPartie() const
     else
         return true;
 
+}
+
+void Arene::afficheMap()
+{
+    std::string m="";
+    int cpt=0;
+    for(auto i: _map){
+        if(i==Tuile::mur) m+="M ";
+        else if(i==Tuile::plaine) m+="P ";
+        else m+="?";
+        cpt++;
+        if(cpt==_tailleMap){
+            m+="\n";
+            cpt=0;
+        }
+    }
+    std::cout<<m;
 }
 
 
@@ -208,7 +170,7 @@ bool Arene::tuileLibre(int tuileVoulu) const
 
 }
 
-Tortue * Arene::trouveLaTortue(int position)
+Tortue * Arene::trouveLaTortuePosition(int position)
 {
     Tortue * tortueTrouver;
     for (std::size_t i=0; i<_listeTortue.size();++i){
@@ -217,6 +179,33 @@ Tortue * Arene::trouveLaTortue(int position)
     }
     return tortueTrouver;
 }
+
+Tortue *Arene::trouveLaTortueID(int ID)
+{
+    return &_listeTortue[ID];
+}
+
+int Arene::tailleListeTortue()
+{
+    return _listeTortue.size();
+}
+
+std::vector<Tortue> Arene::listeTortue()
+{
+    return _listeTortue;
+}
+
+std::vector<Arene::Tuile> Arene::map()
+{
+    return _map;
+}
+
+int Arene::tailleDeLaMap()
+{
+    return _tailleMap;
+}
+
+
 
 int Arene::numeroDeLaTortue(Tortue *tortue)
 {
@@ -236,7 +225,6 @@ bool Arene::laTortueEstEnVie(Tortue *tortue) const
     else
         return false;
 }
-
 
 
 
@@ -318,7 +306,6 @@ std::vector<int> Arene::listeMouvementsPossibles(Tortue *tortue) const
     int currentTuile=tortue->pos()+1;
 
     std::vector<int> listeAccessible;
-
     //Déplacement à droite tant que on n'arrive pas à un bord droit de la map et que la tuile est accessible pour la tortue
     while (currentTuile%_tailleMap != 0 and tuileLibre(currentTuile) and distanceAction(tortue, currentTuile)<=tortue->PE())
     {
@@ -501,10 +488,11 @@ void Arene::tir(Tortue *tortue, int cible)
    std::cout<<std::endl;
    // FIN TEST*/
    if (std::count(v.begin(), v.end(), cible)){
-            //std::cout<<trouveLaTortue(cible)->PV()<<std::endl;
-            tortueCibler=trouveLaTortue(cible);
+            //std::cout<<trouveLaTortuePosition(cible)->PV()<<std::endl;
+            tortueCibler=trouveLaTortuePosition(cible);
             tortueCibler->setPV(tortueCibler->PV()-tortue->degats());
-            //std::cout<<"Tir effectuer"<<trouveLaTortue(cible)->PV()<<std::endl;
+            tortue->setPE(tortue->PE()-1);
+            //std::cout<<"Tir effectuer"<<trouveLaTortuePosition(cible)->PV()<<std::endl;
    }
 }
 

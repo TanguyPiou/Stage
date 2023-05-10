@@ -1,12 +1,15 @@
 #include "Arene.hpp"
+#include "JeuInterface.hpp"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Arene w;
+
+    JeuInterface w;
     w.jeu();
-    w.show();
-    return a.exec();
+
+    return 0;
+    //return a.exec();
 }

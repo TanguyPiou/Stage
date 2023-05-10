@@ -2,15 +2,17 @@
 #include "IA.hpp"
 
 
-class IAleatoire : public IA
-{
+class IAleatoire : public IA{
+
 public:
 
-IAleatoire();
-char continuTour() override;
-char tirer(std::vector<int> tortueCible) override;
-int cible(std::vector<int> tortueCible) override;
-int mouvement(std::vector<int> mvDispo) override;
+    IAleatoire();
+
+    std::vector<Arene::infoAction> tour(int ID, std::vector<Tortue> listeDesTortues, std::vector<Arene::Tuile> map,int tailleMap) override;
+    char continuTour();
+    char tirer(std::vector<int> tortueCible);
+    int cible(std::vector<int> tortueCible);
+    int mouvement(std::vector<int> mvDispo);
 
 
 private:

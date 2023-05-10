@@ -29,6 +29,8 @@ set(PROJECT_SOURCES
         Joueur.cpp
         IAleatoire.hpp
         IAleatoire.cpp
+        JeuInterface.cpp
+        JeuInterface.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

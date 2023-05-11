@@ -16,23 +16,11 @@ Arene::~Arene()
     delete ui;
 }
 
-void Arene::setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap)
-{
-    for (std::size_t n=0;n<_listeTortue.size() ;++n )
-    {
-            _listeTortue[n].setPE(listeDesTortues[n].PE());
-            _listeTortue[n].setPV(listeDesTortues[n].PV());
-            _listeTortue[n].setDegats(listeDesTortues[n].degats());
-            _listeTortue[n].setPos(listeDesTortues[n].pos());
-    }
-    _map=map;
-    _tailleMap=tailleMap;
-}
-
 void Arene::init()
 {
-    _listeTortue.push_back(Tortue ("Avion",10,3,8,0));
-    _listeTortue.push_back(Tortue ("HYRAVION",8,3,10,24));
+    _listeTortue.push_back(Tortue ("LOCOMOTION",10,3,2,0));
+    _listeTortue.push_back(Tortue ("HYRAVION",10,3,3,24));
+    _listeTortue.push_back(Tortue ("SUPERCUB",10,3,10,12));
 
 
     for (std::size_t i=0; i<_listeTortue.size(); i++){
@@ -93,25 +81,24 @@ void Arene::printmap()
 
 //Partie C++//
 
-//Fonction de Gestion de la Partie//
+//Fonction qui actualise l'arène virtuel avec celle de l'arène principal
+//A revoir
 
-
-
-
-bool Arene::finPartie() const
+void Arene::setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap)
 {
-    int tortueVivante=0;
-    for (auto i : _listeTortue)
+    for (std::size_t n=0;n<_listeTortue.size() ;++n )
     {
-        if (laTortueEstEnVie(&i))
-            tortueVivante++;
+            _listeTortue[n].setPE(listeDesTortues[n].PE());
+            _listeTortue[n].setPV(listeDesTortues[n].PV());
+            _listeTortue[n].setDegats(listeDesTortues[n].degats());
+            _listeTortue[n].setPos(listeDesTortues[n].pos());
     }
-    if (tortueVivante>1)
-        return false;
-    else
-        return true;
-
+    _map=map;
+    _tailleMap=tailleMap;
 }
+
+
+    //Fonction d'affichage c++//
 
 void Arene::afficheMap()
 {
@@ -130,9 +117,69 @@ void Arene::afficheMap()
     std::cout<<m;
 }
 
+Tortue * Arene::vainqueur()
+{
+    Tortue * TortueTop1;
 
+    for (auto i : _listeTortue)
+    {
+        if (laTortueEstEnVie(&i))
+        {
+            TortueTop1=&i;
+        }
+    }
+    return TortueTop1;
+}
 
-//Fonction Basique//
+    //Accesseur//
+
+std::vector<Tortue> Arene::listeTortue()
+{
+    return _listeTortue;
+}
+
+std::vector<Arene::Tuile> Arene::map()
+{
+    return _map;
+}
+
+int Arene::tailleDeLaMap()
+{
+    return _tailleMap;
+}
+
+    //Fonction d'information basique//
+
+int Arene::tailleListeTortue()
+{
+    return _listeTortue.size();
+}
+
+int Arene::numeroDeLaTortue(Tortue *tortue)
+{
+    int n=1;
+    for (std::size_t i=0; i<_listeTortue.size();++i)
+    {
+         if(tortue->pos()==_listeTortue[i].pos())
+             n=i;
+    }
+    return n;
+}
+
+Tortue * Arene::trouveLaTortuePosition(int position)
+{
+    Tortue * tortueTrouver;
+    for (std::size_t i=0; i<_listeTortue.size();++i){
+        if(_listeTortue[i].pos()==position)
+                tortueTrouver=&_listeTortue[i];
+    }
+    return tortueTrouver;
+}
+
+Tortue *Arene::trouveLaTortueID(int ID)
+{
+    return &_listeTortue[ID];
+}
 
 std::vector<int> Arene::listeDesPositionsTortues() const
 {
@@ -143,11 +190,15 @@ std::vector<int> Arene::listeDesPositionsTortues() const
     }
     return posTortue;
 }
+
+
+    //Fonction de vérification//
+
 bool Arene::presenceDUneTortue(int position) const
 {
     bool ret=false;
     for (auto i : _listeTortue){
-        if(i.pos()==position)
+        if(i.pos()==position and laTortueEstEnVie(&i))
                 ret=true;
     }
     return ret;
@@ -170,54 +221,6 @@ bool Arene::tuileLibre(int tuileVoulu) const
 
 }
 
-Tortue * Arene::trouveLaTortuePosition(int position)
-{
-    Tortue * tortueTrouver;
-    for (std::size_t i=0; i<_listeTortue.size();++i){
-        if(_listeTortue[i].pos()==position)
-                tortueTrouver=&_listeTortue[i];
-    }
-    return tortueTrouver;
-}
-
-Tortue *Arene::trouveLaTortueID(int ID)
-{
-    return &_listeTortue[ID];
-}
-
-int Arene::tailleListeTortue()
-{
-    return _listeTortue.size();
-}
-
-std::vector<Tortue> Arene::listeTortue()
-{
-    return _listeTortue;
-}
-
-std::vector<Arene::Tuile> Arene::map()
-{
-    return _map;
-}
-
-int Arene::tailleDeLaMap()
-{
-    return _tailleMap;
-}
-
-
-
-int Arene::numeroDeLaTortue(Tortue *tortue)
-{
-    int n=1;
-    for (std::size_t i=0; i<_listeTortue.size();++i)
-    {
-         if(tortue->pos()==_listeTortue[i].pos())
-             n=i;
-    }
-    return n;
-}
-
 bool Arene::laTortueEstEnVie(Tortue *tortue) const
 {
     if (tortue->PV()>0)
@@ -227,6 +230,20 @@ bool Arene::laTortueEstEnVie(Tortue *tortue) const
 }
 
 
+bool Arene::finPartie() const
+{
+    int tortueVivante=0;
+    for (auto i : _listeTortue)
+    {
+        if (laTortueEstEnVie(&i))
+            tortueVivante++;
+    }
+    if (tortueVivante>1)
+        return false;
+    else
+        return true;
+
+}
 
 //Fonction utile pour toutes les actions//
 
@@ -289,10 +306,6 @@ int Arene::distanceAction(Tortue *tortue, int tuileVoulu) const
     else
         return (tuileVoulu-tortue->pos())/_tailleMap;
 }
-
-
-
-
 
 
 
@@ -376,17 +389,17 @@ void Arene::deplacerTortue(Tortue *tortue, int positionVoulu)
     //Sinon le déplacement n'est pas fait et renvoie un message d'erreur
     else
         std::cout<<"Le déplacement est impossible";
-    // TEST MOUVEMENT
-    //std::cout<<'\n'<<"Position de la tortue :"<<tortue.pos();
-    //std::cout<<'\n'<<"Endurance de la tortue :"<<tortue.PE();
-    // FIN TEST
+    /* TEST MOUVEMENT
+    std::cout<<'\n'<<"Position de la tortue :"<<tortue->pos();
+    std::cout<<'\n'<<"Endurance de la tortue :"<<tortue->PE();
+    // FIN TEST */
 }
 
 
 
 //Fonction Permettant de Tirer//
 
-std::vector<int> Arene::posTortueAPorterDeTir(Tortue *tortue) const
+std::vector<int> Arene::posTortueAPorterDeTir(Tortue *tortue)
 {
     int currentTortue = tortue->pos();
     int deplacementVirtuel;
@@ -395,81 +408,85 @@ std::vector<int> Arene::posTortueAPorterDeTir(Tortue *tortue) const
     std::vector<int> tortueTirable;
     for(auto tortueCibler : listeDesPositionsTortues())
     {
-        std::string direc=directionAction(tortue,tortueCibler);
-        if (direc=="Gauche")
+        if (laTortueEstEnVie(trouveLaTortuePosition(tortueCibler)))
         {
-            deplacementVirtuel=currentTortue-1;
-            if (deplacementVirtuel==tortueCibler)
-                toucher=true;
-            else
+            std::string direc=directionAction(tortue,tortueCibler);
+            if (direc=="Gauche")
             {
-                while (toucher==false and tuileLibre(deplacementVirtuel))
+                deplacementVirtuel=currentTortue-1;
+                if (deplacementVirtuel==tortueCibler)
+                    toucher=true;
+                else
                 {
-                    deplacementVirtuel=deplacementVirtuel-1;
-                    if (deplacementVirtuel==tortueCibler)
+                    while (toucher==false and tuileLibre(deplacementVirtuel))
                     {
-                        toucher=true;
+                        deplacementVirtuel=deplacementVirtuel-1;
+                        if (deplacementVirtuel==tortueCibler)
+                        {
+                            toucher=true;
+                        }
                     }
                 }
-            }
-            if(toucher)
-            {
-                tortueTirable.push_back(tortueCibler);
-            }
-        }
-        else if (direc=="Haut")
-        {
-            deplacementVirtuel=currentTortue-_tailleMap;
-            if (deplacementVirtuel==tortueCibler)
-                toucher=true;
-            else
-            {
-                while (toucher==false and tuileLibre(deplacementVirtuel))
+                if(toucher)
                 {
-                    deplacementVirtuel=deplacementVirtuel-_tailleMap;
-                    if (deplacementVirtuel==tortueCibler)
-                        toucher=true;
+                    tortueTirable.push_back(tortueCibler);
                 }
             }
-            if(toucher)
-                tortueTirable.push_back(tortueCibler);
+            else if (direc=="Haut")
+            {
+                deplacementVirtuel=currentTortue-_tailleMap;
+                if (deplacementVirtuel==tortueCibler)
+                    toucher=true;
+                else
+                {
+                    while (toucher==false and tuileLibre(deplacementVirtuel))
+                    {
+                        deplacementVirtuel=deplacementVirtuel-_tailleMap;
+                        if (deplacementVirtuel==tortueCibler)
+                            toucher=true;
+                    }
+                }
+                if(toucher)
+                    tortueTirable.push_back(tortueCibler);
 
-        }
-        else if (direc=="Droite")
-        {
-            deplacementVirtuel=currentTortue+1;
-            if (deplacementVirtuel==tortueCibler)
-                toucher=true;
-            else
-            {
-                while (toucher==false and tuileLibre(deplacementVirtuel))
-                {
-                    deplacementVirtuel=deplacementVirtuel+1;
-                    if (deplacementVirtuel==tortueCibler)
-                        toucher=true;
-                }
             }
-            if(toucher)
-                tortueTirable.push_back(tortueCibler);
-        }
-        else if (direc=="Bas")
-        {
-            deplacementVirtuel=currentTortue+_tailleMap;
-            if (deplacementVirtuel==tortueCibler)
-                toucher=true;
-            else
+            else if (direc=="Droite")
             {
-                while (toucher==false and tuileLibre(deplacementVirtuel))
+                deplacementVirtuel=currentTortue+1;
+                if (deplacementVirtuel==tortueCibler)
+                    toucher=true;
+                else
                 {
-                    deplacementVirtuel=deplacementVirtuel+_tailleMap;
-                    if (deplacementVirtuel==tortueCibler)
-                        toucher=true;
+                    while (toucher==false and tuileLibre(deplacementVirtuel))
+                    {
+                        deplacementVirtuel=deplacementVirtuel+1;
+                        if (deplacementVirtuel==tortueCibler)
+                            toucher=true;
+                    }
                 }
+                if(toucher)
+                    tortueTirable.push_back(tortueCibler);
             }
-            if(toucher)
-                tortueTirable.push_back(tortueCibler);
+            else if (direc=="Bas")
+            {
+                deplacementVirtuel=currentTortue+_tailleMap;
+                if (deplacementVirtuel==tortueCibler)
+                    toucher=true;
+                else
+                {
+                    while (toucher==false and tuileLibre(deplacementVirtuel))
+                    {
+                        deplacementVirtuel=deplacementVirtuel+_tailleMap;
+                        if (deplacementVirtuel==tortueCibler)
+                            toucher=true;
+                    }
+                }
+                if(toucher)
+                    tortueTirable.push_back(tortueCibler);
+            }
+            toucher=false;
         }
-        toucher=false;
+
     }
     return tortueTirable;
 }
@@ -479,6 +496,7 @@ void Arene::tir(Tortue *tortue, int cible)
 {
    std::vector<int> v=posTortueAPorterDeTir(tortue);
    Tortue * tortueCibler;
+   int PVrestant;
    /*TEST Tir Possible
    std::cout<<"Tir Possible : ";
    for (auto i : v)
@@ -490,7 +508,10 @@ void Arene::tir(Tortue *tortue, int cible)
    if (std::count(v.begin(), v.end(), cible)){
             //std::cout<<trouveLaTortuePosition(cible)->PV()<<std::endl;
             tortueCibler=trouveLaTortuePosition(cible);
-            tortueCibler->setPV(tortueCibler->PV()-tortue->degats());
+            PVrestant=tortueCibler->PV()-tortue->degats();
+            if(PVrestant<0)
+                PVrestant=0;
+            tortueCibler->setPV(PVrestant);
             tortue->setPE(tortue->PE()-1);
             //std::cout<<"Tir effectuer"<<trouveLaTortuePosition(cible)->PV()<<std::endl;
    }

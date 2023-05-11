@@ -34,34 +34,41 @@ public:
         int positionAction;
     };
 
-
-    void setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap);
     void init();
     void loadmap(const QString & fileName);
     void printmap();
-    int tailleMap();
 
 //Partie C++///
 
-    //Fonction de Gestion de la Partie//
+    //Fonction qui actualise l'arène virtuel avec celle de l'arène principal
+    //A revoir
+    void setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap);
 
+    //Fonction d'affichage c++//
 
-    bool finPartie() const;
-
-    //Fonction de base//
     void afficheMap();
-    std::vector<int> positionDesTortues();
-    std::vector<int> listeDesPositionsTortues()const;
-    bool presenceDUneTortue(int position) const;
-    bool tuileLibre(int tuileVoulu) const;
-    Tortue * trouveLaTortuePosition(int position);
-    Tortue *trouveLaTortueID(int ID);
-    int tailleListeTortue();
+    Tortue * vainqueur();
+
+    //Accesseur//
+
     std::vector<Tortue> listeTortue();
     std::vector<Tuile> map();
     int tailleDeLaMap();
+
+    //Fonction d'information basique//
+
+    int tailleListeTortue();
     int numeroDeLaTortue(Tortue *tortue);
+    Tortue * trouveLaTortuePosition(int position);
+    Tortue * trouveLaTortueID(int ID);
+    std::vector<int> listeDesPositionsTortues()const;
+
+    //Fonction de vérification//
+
+    bool presenceDUneTortue(int position) const;
+    bool tuileLibre(int tuileVoulu) const;
     bool laTortueEstEnVie (Tortue *tortue) const;
+    bool finPartie() const;
 
     //Fonction utile pour toutes les actions//
 
@@ -75,7 +82,7 @@ public:
 
     //Fonction pour tirer//
 
-    std::vector<int> posTortueAPorterDeTir (Tortue *tortue) const;
+    std::vector<int> posTortueAPorterDeTir (Tortue *tortue);
     void tir(Tortue *tortue, int cible);
 
 //Fin Partie C++//
@@ -91,7 +98,7 @@ private:
     std::vector<Tortue> _listeTortue;
     std::vector<Tuile> _map;
     int _tailleMap;
-    //suppr ???
+    //Qui sera surement mis autre part
     std::vector<std::vector<infoAction>> _historiquePartie;
 
 };

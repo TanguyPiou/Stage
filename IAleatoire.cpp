@@ -57,8 +57,9 @@ char IAleatoire::tirer(std::vector<int> tortueCible)
 
 int IAleatoire::cible(std::vector<int> tortueCible)
 {
-    std::cout<<"";
-    return tortueCible[0];
+    srand (time(NULL));
+    int Atoir = rand() % tortueCible.size();
+    return tortueCible[Atoir];
 }
 
 int IAleatoire::mouvement(std::vector<int> mvDispo)

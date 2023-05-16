@@ -3,27 +3,17 @@
 #include <vector>
 #include <QMainWindow>
 #include <iostream>
-
-#include <QFileDialog>
-#include <QTextStream>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class Arene; }
-QT_END_NAMESPACE
+#include <fstream>
 
 
 
 
-class Arene : public QMainWindow
+
+class Arene
 {
-    Q_OBJECT
+
 
 public:
-    Arene(QWidget *parent = nullptr);
-    ~Arene();
-
     enum class Tuile {plaine,mur};
     enum class typeAction{deplacement,tir};
 
@@ -33,16 +23,17 @@ public:
         typeAction typedAction;
         int positionAction;
     };
+    Arene(std::string fileName);
+    Arene(std::vector<Tortue> listeDesTortues, std::vector<Arene::Tuile> map,int tailleMap);
+    Arene();
 
-    void init();
-    void loadmap(const QString & fileName);
+    ~Arene();
+
+    void loadmap(std::string fileName);
     void printmap();
 
 //Partie C++///
 
-    //Fonction qui actualise l'arène virtuel avec celle de l'arène principal
-    //A revoir
-    void setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap);
 
     //Fonction d'affichage c++//
 
@@ -87,14 +78,10 @@ public:
 
 //Fin Partie C++//
 
-//Partie QT//
-private slots:
-    void on_actionloadmap_triggered();
-    void on_actionclose_triggered();
+
 
 
 private:
-    Ui::Arene *ui;
     std::vector<Tortue> _listeTortue;
     std::vector<Tuile> _map;
     int _tailleMap;

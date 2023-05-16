@@ -19,7 +19,6 @@ set(PROJECT_SOURCES
         main.cpp
         Arene.cpp
         Arene.hpp
-        Arene.ui
         Tortue.cpp
         Tortue.hpp
         res.qrc

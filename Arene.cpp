@@ -1,101 +1,181 @@
 #include "Arene.hpp"
-#include "./ui_Arene.h"
 
 
-//Partie QT
-Arene::Arene(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::Arene)
+
+Arene::Arene()
 {
-    ui->setupUi(this);
-    init();
+    int n;
+    std::string map;
+    std::string nomTortue;
+    float PV;
+    float PE;
+    int degat;
+    int pos;
+
+
+    std::cout<<"Quel map (1, 2 ou 3) : ";
+    std::cin>>n;
+    if (n==3)
+    {
+        map="maps/map2";
+    }
+    else if (n==2)
+    {
+        map="maps/map1";
+    }
+    else
+    {
+        map="maps/default";
+    }
+
+    std::cout<<std::endl<<"Nombre de joueur : ";
+    std::cin>>n;
+
+    for (int i=0; i<n;++i)
+    {
+        std::cout<<"Tortue "<<i<<" : "<<std::endl;
+        std::cout<<"Nom de la tortue : ";
+        std::cin>>nomTortue;
+        std::cout<<"Nombre de PV : ";
+        std::cin>>PV;
+        std::cout<<"Nombre de PE : ";
+        std::cin>>PE;
+        std::cout<<"Nombre de degat : ";
+        std::cin>>degat;
+        std::cout<<"Positionnement sur la map : ";
+        std::cin>>pos;
+
+        _listeTortue.push_back(Tortue(nomTortue,PV,PE,degat,pos));
+
+    }
+
+    loadmap(map);
+
+}
+
+Arene::Arene(std::vector<Tortue> listeDesTortues, std::vector<Arene::Tuile> map, int tailleMap)
+{
+    //for (std::size_t n=0;n<_listeTortue.size() ;++n )
+    {
+    _listeTortue=listeDesTortues;
+    }
+    _map=map;
+    _tailleMap=tailleMap;
 }
 
 Arene::~Arene()
 {
-    delete ui;
 }
 
-void Arene::init()
+Arene::Arene(std::string fileName)
 {
-    _listeTortue.push_back(Tortue ("LOCOMOTION",10,3,2,0));
-    _listeTortue.push_back(Tortue ("HYRAVION",10,3,3,24));
-    _listeTortue.push_back(Tortue ("SUPERCUB",10,3,10,12));
+    std::string nomTortue;
+    float PV;
+    float PE;
+    int degat;
+    int pos;
+    std::ifstream fichier(fileName);
+    std::string map;
+    int numLigne=1;
 
+     if(fichier)
+     {
+        //L'ouverture s'est bien passée, on peut donc lire
+        std::string ligne; //Une variable pour stocker les lignes lues
 
-    for (std::size_t i=0; i<_listeTortue.size(); i++){
+        while(getline(fichier, ligne)) //Tant qu'on n'est pas à la fin, on lit
+        {
+            std::cout<<"Tortue : "<<numLigne;
+            switch (numLigne)
+            {
+                case(1) :
+                    if (ligne=="3")
+                    {
+                        map="maps/map2";
+                    }
+                    else if (ligne=="2")
+                    {
+                        map="maps/map1";
+                    }
+                    else
+                    {
+                        map="maps/default";
+                    }
+                    break;
+                case(2) :
+                    nomTortue=ligne;
+                    break;
+                case(3) :
+                    PV=std::stof(ligne);
+                    break;
+                case(4) :
+                    PE=std::stof(ligne);
+                    break;
+                case(5) :
+                    degat=std::stof(ligne);
+                    break;
+                case(6) :
+                    pos=std::stof(ligne);
+                    std::cout<<"Tortue : "<<nomTortue<<PV<<PE<<degat<<pos<<std::endl;
+                    _listeTortue.push_back(Tortue(nomTortue,PV,PE,degat,pos));
+                    numLigne=1;
+                    break;
+            }
+            ++numLigne;
+        }
+     }
+     else
+     {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+     }
 
-        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\n");
-    }
-
-
-    loadmap(":/maps/maps/default");
-    printmap();
+    loadmap(map);
 }
 
-void Arene::loadmap(const QString & fileName)
+void Arene::loadmap(std::string fileName)
 {
-
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly)){
-        return;
-    }
-
-    QTextStream in(&file);
-
+    std::ifstream fichier(fileName);
     std::vector<Tuile> map;
     int taille=0;
-    //Parcours du fichier
-    while(!in.atEnd()){
-        QString ligne = in.readLine();
-        taille++;
-        for(auto i : ligne){
-            if(i=='M') map.push_back(Tuile::mur);
-            else map.push_back(Tuile::plaine);
+
+     if(fichier)
+     {
+        //L'ouverture s'est bien passée, on peut donc lire
+
+        std::string ligne; //Une variable pour stocker les lignes lues
+
+        while(getline(fichier, ligne)) //Tant qu'on n'est pas à la fin, on lit
+        {
+
+           //std::cout << ligne << std::endl;
+           taille++;
+           for(auto i : ligne){
+               if(i=='M') map.push_back(Tuile::mur);
+               else map.push_back(Tuile::plaine);
+           }
+           //Et on l'affiche dans la console
+           //Ou alors on fait quelque chose avec cette ligne
+           //À vous de voir
         }
-    }
+     }
+     else
+     {
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+     }
+
+
+    //Parcours du fichier
 
     _map=map;
     _tailleMap=taille;
-    file.close();
 
-}
 
-void Arene::printmap()
-{
-    std::string m="";
-    int cpt=0;
-    for(auto i: _map){
-        if(i==Tuile::mur) m+="M ";
-        else if(i==Tuile::plaine) m+="P ";
-        else m+="?";
-        cpt++;
-        if(cpt==_tailleMap){
-            m+="\n";
-            cpt=0;
-        }
-    }
-    ui->Map->setText(QString::fromStdString(m));
 }
 
 
 //Partie C++//
 
 //Fonction qui actualise l'arène virtuel avec celle de l'arène principal
-//A revoir
-
-void Arene::setAreneVirtuel(std::vector<Tortue> listeDesTortues, std::vector<Tuile> map, int tailleMap)
-{
-    for (std::size_t n=0;n<_listeTortue.size() ;++n )
-    {
-            _listeTortue[n].setPE(listeDesTortues[n].PE());
-            _listeTortue[n].setPV(listeDesTortues[n].PV());
-            _listeTortue[n].setDegats(listeDesTortues[n].degats());
-            _listeTortue[n].setPos(listeDesTortues[n].pos());
-    }
-    _map=map;
-    _tailleMap=tailleMap;
-}
 
 
     //Fonction d'affichage c++//
@@ -116,6 +196,8 @@ void Arene::afficheMap()
     }
     std::cout<<m;
 }
+
+//BUG je ne sais pas pk n'est pas utilisé
 
 Tortue * Arene::vainqueur()
 {
@@ -518,24 +600,3 @@ void Arene::tir(Tortue *tortue, int cible)
 }
 
 //Partie QT //
-
-
-void Arene::on_actionloadmap_triggered()
-{
-    QString fileName= QFileDialog::getOpenFileName(this, "Load Map", "../Tortue/maps");
-
-    if (fileName.isEmpty())
-        return;
-    else loadmap(fileName);
-
-    for (std::size_t i=0; i<_listeTortue.size(); i++){
-
-        ui->T1->setText(ui->T1->text()+QString::fromStdString(_listeTortue[i].nom())+"\nPoints de vie: "+QString::number(_listeTortue[i].PV())+"\nEndurance: "+QString::number(_listeTortue[i].PE())+"\n");
-    }
-    printmap();
-}
-
-void Arene::on_actionclose_triggered()
-{
-    this->close();
-}

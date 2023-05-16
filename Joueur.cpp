@@ -6,8 +6,7 @@ Joueur::Joueur()
 
 std::vector<Arene::infoAction> Joueur::tour(int ID, std::vector<Tortue> listeDesTortues, std::vector<Arene::Tuile> map, int tailleMap)
 {
-    Arene areneVirtuel;
-    areneVirtuel.setAreneVirtuel(listeDesTortues,map,tailleMap);
+    Arene areneVirtuel(listeDesTortues,map,tailleMap);
 
     Tortue* tortue=areneVirtuel.trouveLaTortueID(ID);
     std::vector<Arene::infoAction> currentTour;

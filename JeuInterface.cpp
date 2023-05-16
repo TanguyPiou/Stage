@@ -7,8 +7,7 @@ JeuInterface::JeuInterface()
 void JeuInterface::jeu()
 {
 
-        Arene a;
-        //a.show();
+        Arene a("Settings/defaut.txt");
 
         Tortue * tortue;
         Tortue * victime;
@@ -21,9 +20,10 @@ void JeuInterface::jeu()
         std::vector<IA*> listeJoueur;
 
         //Modifiable
+
         IAleatoire J1;
         IAleatoire J2;
-        IAleatoire J3;
+        Joueur J3;
 
 
         listeJoueur.push_back(&J1);
@@ -87,8 +87,9 @@ void JeuInterface::jeu()
         //Par une magie obscure ça marche pas
         //tortue=a.vainqueur();
         std::cout<<tortue->nom()<<"(tortue "<<a.numeroDeLaTortue(tortue)<<") est vainqueur large il avait "
-        <<tortue->PV()<<" PV les autres sont nuls"<<std::endl;
+        <<tortue->PV()<<" PV"<<std::endl;
         //victoire
+
 
 }
 

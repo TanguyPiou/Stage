@@ -9,4 +9,7 @@
         <file>maps/map1</file>
         <file>maps/default</file>
     </qresource>
+    <qresource prefix="/Settings">
+        <file>Settings/defaut.txt</file>
+    </qresource>
 </RCC>

@@ -2,7 +2,7 @@
 
 
 Tortue::Tortue(std::string nom, float PV, float pointEndu, int degats, int pos)
-    :_nom(nom), _PV(PV), _PE(pointEndu), _degats(degats), _pos(pos), _tir(false){};
+    :_nom(nom), _PV(PV), _PE(pointEndu), _degats(degats), _pos(pos){};
 
 
 std::string Tortue::nom() const
@@ -50,14 +50,5 @@ void Tortue::setPos(int newPos)
     _pos=newPos;
 }
 
-bool Tortue::tir() const
-{
-    return _tir;
-}
-
-void Tortue::setTir(bool tir)
-{
-    _tir=tir;
-}
 
 

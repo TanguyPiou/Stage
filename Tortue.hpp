@@ -15,8 +15,6 @@ public:
     void setDegats(int degats);
     int pos() const;
     void setPos(int newPos);
-    bool tir() const;
-    void setTir(bool tir);
 
 
 private:
@@ -25,5 +23,4 @@ private:
     float _PE;
     int _degats;
     int _pos;
-    bool _tir;
 };

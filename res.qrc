@@ -3,12 +3,13 @@
         <file>img/vide.jpg</file>
         <file>img/tortue.png</file>
         <file>img/mur.jpg</file>
-        <file>img/mur2.png</file>
-        <file>img/bg.png</file>
     </qresource>
     <qresource prefix="/maps">
         <file>maps/map2</file>
         <file>maps/map1</file>
         <file>maps/default</file>
+    </qresource>
+    <qresource prefix="/Settings">
+        <file>Settings/defaut.txt</file>
     </qresource>
 </RCC>

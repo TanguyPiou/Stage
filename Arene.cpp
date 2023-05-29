@@ -4,6 +4,7 @@
 
 Arene::Arene()
 {
+    /*
     int n;
     std::string map;
     std::string nomTortue;
@@ -49,7 +50,8 @@ Arene::Arene()
 
     }
 
-    loadmap(map);
+    loadmap(map);*/
+    Arene("Settings/defaut.txt");
 
 }
 
@@ -603,6 +605,16 @@ void Arene::tir(Tortue *tortue, int cible)
             tortue->setPE(tortue->PE()-1);
             //std::cout<<"Tir effectuer"<<trouveLaTortuePosition(cible)->PV()<<std::endl;
    }
+}
+
+int Arene::getTailleMap() const
+{
+    return _tailleMap;
+}
+
+std::vector<Arene::Tuile> Arene::getMap() const
+{
+    return _map;
 }
 
 //Partie QT //

@@ -77,6 +77,10 @@ public:
     std::vector<int> posTortueAPorterDeTir (Tortue *tortue);
     void tir(Tortue *tortue, int cible);
 
+    //get
+    int getTailleMap() const;
+    std::vector<Tuile> getMap() const;
+
 //Fin Partie C++//
 
 

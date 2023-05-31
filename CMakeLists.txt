@@ -28,8 +28,23 @@ set(PROJECT_SOURCES
         Joueur.cpp
         IAleatoire.hpp
         IAleatoire.cpp
-        JeuInterface.cpp
-        JeuInterface.hpp
+
+        formmode.cpp
+        formmode.hpp
+        formmode.ui
+        formnbj.cpp
+        formnbj.hpp
+        formnbj.ui
+        formtortue.cpp
+        formtortue.hpp
+        formtortue.ui
+        formmap.cpp
+        formmap.hpp
+        formmap.ui
+
+        jeuaffichage.hpp
+        jeuaffichage.cpp
+        jeuaffichage.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

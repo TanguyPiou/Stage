@@ -4,6 +4,7 @@
 
 Arene::Arene()
 {
+    /*
     int n;
     std::string map;
     std::string nomTortue;
@@ -49,7 +50,8 @@ Arene::Arene()
 
     }
 
-    loadmap(map);
+    loadmap(map);*/
+    Arene(":/setting/Settings/defaut.txt");
 
 }
 
@@ -63,60 +65,70 @@ Arene::Arene(std::vector<Tortue> listeDesTortues, std::vector<Arene::Tuile> map,
     _tailleMap=tailleMap;
 }
 
+Arene::Arene(std::vector<Tortue> listeDesTortues, QString map)
+{
+    _listeTortue=listeDesTortues;
+    loadmap(map);
+}
+
 Arene::~Arene()
 {
 }
 
-Arene::Arene(std::string fileName)
+Arene::Arene(QString fileName)
 {
     std::string nomTortue;
     float PV;
     float PE;
     int degat;
     int pos;
-    std::ifstream fichier(fileName);
-    std::string map;
+    QFile fichier(fileName);
+    QString map;
     int numLigne=1;
 
-     if(fichier)
+     if(!fichier.open(QIODevice::ReadOnly))
+     {
+         std::cout << "ERREUR!: Impossible d'ouvrir le fichier en lecture." << std::endl;
+     }
+     else
      {
         //L'ouverture s'est bien passée, on peut donc lire
-        std::string ligne; //Une variable pour stocker les lignes lues
-
-        while(getline(fichier, ligne)) //Tant qu'on n'est pas à la fin, on lit
-        {
-            std::cout<<"Tortue : "<<numLigne;
+         QTextStream in(&fichier);
+         while(!in.atEnd()) //Tant qu'on n'est pas à la fin, on lit
+         {
+            QString ligne = in.readLine();
+            //std::cout<<"Tortue : "<<numLigne;
             switch (numLigne)
             {
                 case(1) :
                     if (ligne=="3")
                     {
-                        map="maps/map2";
+                        map=":/cartes/maps/default.txt";
                     }
                     else if (ligne=="2")
                     {
-                        map="maps/map1";
+                        map=":/cartes/maps/default.txt";
                     }
                     else
                     {
-                        map="maps/default";
+                        map=":/cartes/maps/default.txt";
                     }
                     break;
                 case(2) :
-                    nomTortue=ligne;
+                    nomTortue=ligne.toStdString();
                     break;
                 case(3) :
-                    PV=std::stof(ligne);
+                    PV=ligne.toInt();
                     break;
                 case(4) :
-                    PE=std::stof(ligne);
+                    PE=ligne.toInt();
                     break;
                 case(5) :
-                    degat=std::stof(ligne);
+                    degat=ligne.toInt();
                     break;
                 case(6) :
-                    pos=std::stof(ligne);
-                    std::cout<<"Tortue : "<<nomTortue<<PV<<PE<<degat<<pos<<std::endl;
+                    pos=ligne.toInt();
+                   // std::cout<<"Tortue : "<<nomTortue<<PV<<PE<<degat<<pos<<std::endl;
                     _listeTortue.push_back(Tortue(nomTortue,PV,PE,degat,pos));
                     numLigne=1;
                     break;
@@ -124,32 +136,30 @@ Arene::Arene(std::string fileName)
             ++numLigne;
         }
      }
-     else
-     {
-        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
-     }
-
     loadmap(map);
 }
 
-void Arene::loadmap(std::string fileName)
+void Arene::loadmap(QString fileName)
 {
-    std::ifstream fichier(fileName);
+    QFile fichier(fileName);
     std::vector<Tuile> map;
     int taille=0;
 
-     if(fichier)
+     if(!fichier.open(QIODevice::ReadOnly))
+     {
+         std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+     }
+     else
      {
         //L'ouverture s'est bien passée, on peut donc lire
-
-        std::string ligne; //Une variable pour stocker les lignes lues
-
-        while(getline(fichier, ligne)) //Tant qu'on n'est pas à la fin, on lit
+        QTextStream in(&fichier);
+        while(!in.atEnd()) //Tant qu'on n'est pas à la fin, on lit
         {
-
+            QString ligne = in.readLine();
            //std::cout << ligne << std::endl;
-           taille++;
+           taille=0;
            for(auto i : ligne){
+               taille++;
                if(i=='M') map.push_back(Tuile::mur);
                else map.push_back(Tuile::plaine);
            }
@@ -158,11 +168,6 @@ void Arene::loadmap(std::string fileName)
            //À vous de voir
         }
      }
-     else
-     {
-        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
-     }
-
 
     //Parcours du fichier
 
@@ -597,6 +602,16 @@ void Arene::tir(Tortue *tortue, int cible)
             tortue->setPE(tortue->PE()-1);
             //std::cout<<"Tir effectuer"<<trouveLaTortuePosition(cible)->PV()<<std::endl;
    }
+}
+
+int Arene::getTailleMap() const
+{
+    return _tailleMap;
+}
+
+std::vector<Arene::Tuile> Arene::getMap() const
+{
+    return _map;
 }
 
 //Partie QT //

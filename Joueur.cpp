@@ -52,19 +52,31 @@ char Joueur::continuTour()
 
 char Joueur::tirer(std::vector<int> tortueCible)
 {
+    char n;
     if (tortueCible.empty())
         return 'n';
     else
     {
-        std::cout<<"Oups l'aim bot est activé"<<std::endl;
-        return 'y';
+        std::cout<<"Voulez vous tirer(y/n) : "<<std::endl;
+        std::cin>>n;
+        std::cout<<std::endl;
+        return n;
     }
 }
 
 int Joueur::cible(std::vector<int> tortueCible)
 {
-    std::cout<<"Oups le shoot bot est activé"<<std::endl;
-    return tortueCible[0];
+    int n;
+    std::cout<<"Vous pouvez vous tirer sur ces cases : "<<std::endl;
+    for (auto i:tortueCible)
+    {
+        std::cout<<"|"<<i<<"|";
+    }
+    std::cout<<std::endl<<"Voulez tirer sur quelles cases : ";
+    std::cin>>n;
+
+    std::cout<<std::endl;
+    return n;
 }
 
 int Joueur::mouvement(std::vector<int> mvDispo)

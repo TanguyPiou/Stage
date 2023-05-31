@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include <iostream>
 #include <fstream>
-
+#include <QFile>
+#include <QTextStream>
 
 
 
@@ -23,14 +24,14 @@ public:
         typeAction typedAction;
         int positionAction;
     };
-    Arene(std::string fileName);
+    Arene(QString fileName);
     Arene(std::vector<Tortue> listeDesTortues, std::vector<Arene::Tuile> map,int tailleMap);
-    Arene(std::vector<Tortue> listeDesTortues, std::string map);
+    Arene(std::vector<Tortue> listeDesTortues, QString map);
     Arene();
 
     ~Arene();
 
-    void loadmap(std::string fileName);
+    void loadmap(QString fileName);
     void printmap();
 
 //Partie C++///

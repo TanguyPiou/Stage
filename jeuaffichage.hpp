@@ -35,7 +35,7 @@ public:
     void initPosTortues();
     void updatePosTortue(int i);
 
-    std::string choixMapForm();
+    QString choixMapForm();
     Tortue creerTortueForm();
     Arene creerAreneFormPerso();
     Arene creerAreneForm();

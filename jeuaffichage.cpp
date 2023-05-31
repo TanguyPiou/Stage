@@ -34,14 +34,15 @@ void jeuaffichage::initmap()
     int tailleMap=_arene.getTailleMap();
     //Taille d'une image (à mettre dans settings plus tard j'imagine)
     int t=150;
-    ui->graphicsView->setMinimumSize(t*tailleMap+tailleMap,t*tailleMap+tailleMap);
-    ui->graphicsView->setMaximumSize(t*tailleMap+tailleMap,t*tailleMap+tailleMap);
+
+    ui->graphicsView->setMinimumSize(t*tailleMap+tailleMap,t*(map.size()/tailleMap)+(map.size()/tailleMap));
+    ui->graphicsView->setMaximumSize(t*tailleMap+tailleMap,t*(map.size()/tailleMap)+(map.size()/tailleMap));
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //Création des images
     QPixmap imgMur= QPixmap(":/images/img/mur.jpg").scaled(t,t);
-    QPixmap imgBG= QPixmap(":/images/img/bg.png").scaled(t*tailleMap,t*tailleMap);
+    QPixmap imgBG= QPixmap(":/images/img/bg.png").scaled(t*tailleMap,t*(map.size()/tailleMap));
 
     //Ajout de l'image de fond
     QGraphicsPixmapItem *background= new QGraphicsPixmapItem;
@@ -68,7 +69,7 @@ void jeuaffichage::initPosTortues()
     for(auto i : _arene.listeDesPositionsTortues()){
         QGraphicsPixmapItem *tortue= new QGraphicsPixmapItem;
         tortue->setPixmap(imgTortue);
-        tortue->setPos(i%_arene.getTailleMap()*t,i/_arene.getTailleMap()*t);
+        tortue->setPos(i%_arene.getTailleMap()*t,i/(_arene.getMap().size()/_arene.getTailleMap())*t);
         _items.push_back(tortue);
         ui->graphicsView->scene()->addItem(tortue);
     }
@@ -76,6 +77,7 @@ void jeuaffichage::initPosTortues()
 
 void jeuaffichage::updatePosTortue(int i)
 {
+
     int t=150;
     QTimeLine *timer = new QTimeLine(5000);
     timer->setFrameRange(0, 100);
@@ -84,7 +86,7 @@ void jeuaffichage::updatePosTortue(int i)
     animation->setItem(_items[i]);
     animation->setTimeLine(timer);
     int newx=_arene.listeDesPositionsTortues()[i]%_arene.getTailleMap()*t;
-    int newy=_arene.listeDesPositionsTortues()[i]/_arene.getTailleMap()*t;
+    int newy=_arene.listeDesPositionsTortues()[i]/(_arene.getMap().size()/_arene.getTailleMap())*t;
     animation->setPosAt(0.1, QPointF(newx, newy));
 
     timer->start();
@@ -92,17 +94,17 @@ void jeuaffichage::updatePosTortue(int i)
 
 }
 
-std::string jeuaffichage::choixMapForm()
+QString jeuaffichage::choixMapForm()
 {
     if(_formmap.exec()==QDialog::Accepted){
         int choix=_formmap.getChoix();
         switch (choix) {
-            case(1):return("maps/default"); break;
-            case(2):return("maps/map1"); break;
-            case(3):return("maps/map2"); break;
+            case(1):return(":/cartes/maps/default.txt"); break;
+            case(2):return(":/cartes/maps/map1.txt"); break;
+            case(3):return(":/cartes/maps/map2.txt"); break;
         }
     }
-    return ("maps/default");
+    return (":/cartes/maps/default.txt");
 }
 
 Tortue jeuaffichage::creerTortueForm()
@@ -122,13 +124,13 @@ Arene jeuaffichage::creerAreneFormPerso()
         for(int i=0; i<nbj; i++){
             listeTortue.push_back(creerTortueForm());
         }
-        std::string map=choixMapForm();
+        QString map=choixMapForm();
 
         return Arene(listeTortue, map);
     }
 
 
-    return Arene("Settings/defaut.txt");
+    return Arene(":/setting/Settings/defaut.txt");
 }
 
 Arene jeuaffichage::creerAreneForm()
@@ -137,11 +139,11 @@ Arene jeuaffichage::creerAreneForm()
         int mode=_formmode.getChoix();
 
         switch (mode) {
-            case(1):return Arene("Settings/defaut.txt"); break;
+            case(1):return Arene(":/setting/Settings/defaut.txt"); break;
             case(2): return creerAreneFormPerso(); break;
         }
     }
-    return Arene("Settings/defaut.txt");
+    return Arene(":/setting/Settings/defaut.txt");
 
 }
 
